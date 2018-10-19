@@ -48,4 +48,14 @@ exports.moderation = function(message) {
     }
 };
 
+exports.role = function (message) {
+    if (message.content.startsWith('!role')) {
+        message.author.send("Send !ping");
+
+        if (message.author.lastMessage === "!ping") {
+            message.author.send("ok !");
+        }
+    }
+};
+
 
