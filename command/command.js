@@ -50,11 +50,19 @@ exports.moderation = function(message) {
 
 exports.role = function (message) {
     if (message.content.startsWith('!role')) {
-        message.author.send("Send !ping");
+        message.author.createDM().then(channel => {
+            channel.send("Salut je te propose un petit test pour obtenir ton rôle :): \n" +
+                "fait `!1`");
 
-        if (message.author.lastMessage === "!ping") {
-            message.author.send("ok !");
-        }
+            channel.client.on(
+                'message', message => {
+                    if (message.content.startsWith('!1')) {
+                        channel.send("GG !!")
+                    }
+                }
+            )
+        });
+
     }
 };
 

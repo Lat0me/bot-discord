@@ -11,6 +11,7 @@ client.on('message', message => {
 
     Command.Ping(message);
     Command.moderation(message);
+    Command.role(message);
 
 });
 
