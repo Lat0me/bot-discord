@@ -7,6 +7,14 @@ exports.Ping = function(message)  {
             '```'
         );
     }
+    if (message.content === '!pong') {
+        message.reply(
+            '```Markdown\n' +
+            'Ping\n' +
+            '====' +
+            '```'
+        );
+    }
 };
 
 exports.moderation = function(message) {
@@ -49,20 +57,40 @@ exports.moderation = function(message) {
 };
 
 exports.role = function (message) {
+
+    let server = message.guild;
+    let memberServer = message.member;
+
     if (message.content.startsWith('!role')) {
+        let userTest = message.author;
         message.author.createDM().then(channel => {
-            channel.send("Salut je te propose un petit test pour obtenir ton rôle :): \n" +
-                "fait `!1`");
+            channel.send("Salut @" + userTest.username + ", je te propose un petit test pour obtenir ton rôle :). \n" +
+                "Fait `!go` pour commencer. \n" +
+                "Merci de répondre sérieusement.");
 
             channel.client.on(
                 'message', message => {
-                    if (message.content.startsWith('!1')) {
-                        channel.send("GG !!")
+                    if (message.content.startsWith('!go')) {
+                        channel.send("`1ere Question :` \n" +
+                            "Front ? \n" +
+                            "Oui - > `!o`\n" +
+                            "Non - > `!n`");
+                        channel.client.on(
+                            'message', message => {
+                                if (message.content.startsWith('!o')) {
+                                    memberServer.addRole(server.roles.get("501027461870387210"));
+                                    channel.send("Tu as le rôle 💢Front");
+                                    return message.author.deleteDM();
+                                } else if (message.content.startsWith('!n')) {
+                                    channel.send("Suivants");
+                                }
+                            }
+                        )
                     }
+                    return message.author.deleteDM();
                 }
             )
         });
-
     }
 };
 
