@@ -56,6 +56,33 @@ exports.moderation = function(message) {
     }
 };
 
+search = function(channel, key){
+    channel.client.on(
+        'message', message => {
+            if (message.content.startsWith(key)) {
+                return true
+            }
+        });
+};
+
+question = function(server, channel, memberServer, roleId, roleName, command){
+    return new Promise((resolve) => {
+    channel.client.on(
+        'message', message => {
+            if (message.content.startsWith('!'+command)) {
+                memberServer.addRole(server.roles.get(roleId));
+                channel.send("Tu as le rôle " + roleName);
+                resolve = "next";
+                channel.delete();
+            } else if (message.content.startsWith('!n')) {
+                channel.send("Suivants");
+                resolve = "ok";
+                channel.delete();
+            }
+        })});
+};
+
+
 exports.role = function (message) {
 
     let server = message.guild;
@@ -63,33 +90,50 @@ exports.role = function (message) {
 
     if (message.content.startsWith('!role')) {
         let userTest = message.author;
+
         message.author.createDM().then(channel => {
-            channel.send("Salut @" + userTest.username + ", je te propose un petit test pour obtenir ton rôle :). \n" +
+            channel.send("Salut " + userTest.username + ", je te propose un petit test pour obtenir ton rôle :). \n" +
                 "Fait `!go` pour commencer. \n" +
                 "Merci de répondre sérieusement.");
 
             channel.client.on(
                 'message', message => {
-                    if (message.content.startsWith('!go')) {
-                        channel.send("`1ere Question :` \n" +
-                            "Front ? \n" +
-                            "Oui - > `!o`\n" +
-                            "Non - > `!n`");
-                        channel.client.on(
-                            'message', message => {
-                                if (message.content.startsWith('!o')) {
-                                    memberServer.addRole(server.roles.get("501027461870387210"));
-                                    channel.send("Tu as le rôle 💢Front");
-                                    return message.author.deleteDM();
-                                } else if (message.content.startsWith('!n')) {
-                                    channel.send("Suivants");
-                                }
-                            }
-                        )
+                    if (message.content.startsWith("!go")) {
+                        var i = 0;
+                        if (i === 0){
+                            channel.send("```FRONT ?\n" +
+                                "Oui - > !FRONT```\n");
+                            question(server, channel, memberServer, "501027461870387210", "💢FRONT", "FRONT");
+
+                            i ++;
+                        }
+                        if (i === 1) {
+                            channel.send("```DEV ?\n" +
+                                "Oui - > !DEV```\n");
+                            question(server, channel, memberServer, "501026577182883850", "👨‍💻Développeur", "DEV");
+                            i++
+                        }
+                        if (i === 2) {
+                            channel.send("```BACK ?\n" +
+                                "Oui - > !BACK```\n");
+                            question(server, channel, memberServer, "501031215000977428", "📊Back", "BACK");
+                            i++
+                        }
+                        if (i === 3) {
+                            channel.send("```ADMIN SYS ? \n" +
+                                "Oui - > !SYS```\n");
+                            question(server, channel, memberServer, "501031741872668682", "☁Admin Sys", "SYS");
+                            i++
+                        }
+                        if (i === 4) {
+                            channel.send("```GRAPHISTE ?\n" +
+                                "Oui - > !GRAPH```\n");
+                            question(server, channel, memberServer, "501030671330967577", "💫Graphiste", "GRAPH");
+
+                        }
                     }
-                    return message.author.deleteDM();
-                }
-            )
+                });
+            channel.delete().then(console.log);
         });
     }
 };
