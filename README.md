@@ -7,10 +7,11 @@ Discord Bot for Pig Company
 - npm
 - node
 
+Copy `.env.dist` to `.env`and add your token see: https://discordapp.com/developers/applications
 
 command :
 
-npm install discord.js node-opus 
+npm install
 
 ### Start 
 
