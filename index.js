@@ -6,8 +6,8 @@ const Press = require('./command/press.js');
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    let newsChannel = client.channels.get('682524486888718407');
 
+    let newsChannel = client.channels.get('682524486888718407');
     Press.fluxRss(newsChannel).then(r => console.log(r))
 });
 
