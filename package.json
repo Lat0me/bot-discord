@@ -2,7 +2,7 @@
   "dependencies": {
     "discord.js": "^11.5.1",
     "dotenv": "^8.2.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "node-opus": "^0.3.3",
     "rss-parser": "^3.7.5"
   }
